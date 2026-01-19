@@ -24,6 +24,21 @@ fun twoSum(nums: IntArray, t: Int): IntArray {
     return intArrayOf()
 }
 
+//brute force
+fun twoSumBruteForce(nums: IntArray, t: Int): IntArray {
+    val n = nums.size
+
+    for (i in 0 until n) {
+        for (j in i + 1 until n) {
+            if (nums[i] + nums[j] == t) {
+                return intArrayOf(i, j)
+            }
+        }
+    }
+
+    return intArrayOf()
+}
+
 /* You are given an array prices where prices[i] is the price of a given stock on the ith day.
 
 You want to maximize your profit by choosing a single day to buy one stock and choosing a different day in the future to sell that stock.
@@ -52,6 +67,22 @@ fun maxProfit(prices: IntArray): Int {
     return maxProfit
 }
 
+//brute force
+fun maxProfitBruteForce(prices: IntArray): Int {
+    val n = prices.size
+    var maxProfit = 0
+    for (i in 0 until n) {
+        for (j in i + 1 until n) {
+            val profit = prices[j] - prices[i]
+            if (profit > maxProfit) {
+                maxProfit = profit
+            }
+        }
+    }
+    return maxProfit
+}
+
+
 /* Given an integer array nums, return true if any value appears at least twice in the array, and return false if every element is distinct.
 https://leetcode.com/problems/contains-duplicate/description/
 3. Contains Duplicate - Leetcode 217
@@ -63,6 +94,20 @@ fun containsDuplicate(nums: IntArray): Boolean {
         if (num in seen) return true
         seen.add(num)
     }
+    return false
+}
+
+//bruteForce
+fun containsDuplicateBruteForce(nums: IntArray): Boolean {
+    val n = nums.size
+    for (i in 0 until n) {
+        for (j in i + 1 until n) {
+            if (nums[i] == nums[j]) {
+                return true
+            }
+        }
+    }
+
     return false
 }
 
@@ -648,6 +693,61 @@ fun numDecodings(s: String): Int {
 
     return prev
 }
+
+/* ValidAnagram
+Given two strings s and t, return true if t is an anagram of s, and false otherwise.
+https://leetcode.com/problems/valid-anagram/description/
+*/
+
+//bruteForce
+fun isAnagramBruteForce(s: String, t: String): Boolean {
+    if (s.length != t.length) {
+        return false
+    }
+    val a = s.toCharArray()
+    val b = t.toCharArray()
+    a.sort()
+    b.sort()
+    return a.contentEquals(b)
+}
+
+fun isAnagram(s: String, t: String): Boolean {
+    if (s.length != t.length) return false
+    val count = IntArray(26)
+    for (i in s.indices) {
+        count[s[i] - 'a']++
+        count[t[i] - 'a']--
+    }
+    for (c in count) {
+        if (c != 0) return false
+    }
+    return true
+}
+
+/* Longest Substring without Repeating Characters
+Given a string s, find the length of the longest substring without duplicate characters.
+https://leetcode.com/problems/longest-substring-without-repeating-characters/description/
+*/
+fun lengthOfLongestSubstring(s: String): Int {
+    val map = HashMap<Char, Int>()  // stores last index of character
+    var left = 0
+    var maxLen = 0
+
+    for (right in s.indices) {
+        val ch = s[right]
+
+        // if character already seen, move left pointer
+        if (map.containsKey(ch)) {
+            left = maxOf(left, map[ch]!! + 1)
+        }
+
+        map[ch] = right
+        maxLen = maxOf(maxLen, right - left + 1)
+    }
+
+    return maxLen
+}
+
 
 
 
