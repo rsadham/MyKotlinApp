@@ -748,6 +748,40 @@ fun lengthOfLongestSubstring(s: String): Int {
     return maxLen
 }
 
+/* Maximum Depth of Binary Tree
+Given the root of a binary tree, return its maximum depth.
+
+A binary tree's maximum depth is the number of nodes along the longest path from the root node down to the farthest leaf node.
+https://leetcode.com/problems/maximum-depth-of-binary-tree/description/
+ */
+fun maxDepthOfRootTree(root: TreeNode?): Int {
+    if (root == null) {
+        return 0
+    }
+    val left = root.left
+    val right = root.right
+    return 1 + maxOf(maxDepthOfRootTree(left), maxDepthOfRootTree(right))
+}
+
+/*Invert Binary Tree
+ Given the root of a binary tree, invert the tree, and return its root.
+ https://leetcode.com/problems/invert-binary-tree/description/
+ */
+fun invertTree(root: TreeNode?): TreeNode? {
+
+    if (root == null) {
+        return null
+    }
+
+    val left = invertTree(root.left)
+    val right = invertTree(root.right)
+
+    root.left = right
+    root.right = left
+
+    return root
+}
+
 
 
 
