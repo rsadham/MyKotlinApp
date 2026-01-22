@@ -1,5 +1,7 @@
 package com.example.mykotlinapplication
 
+import com.example.mykotlinapplication.linkedListProblem.ListNode
+
 
 /* Given an array of integers nums and an integer t, return indices of the two numbers such that they add up to t.
 
@@ -830,8 +832,43 @@ fun firstBadVersion(n:Int): Int {
     return left
 }
 
+/*Reverse Linked List
+Given the head of a singly linked list, reverse the list, and return the reversed list.
+https://leetcode.com/problems/reverse-linked-list/description/
+*/
+fun reverseList(node: ListNode): ListNode? {
+    var prev: ListNode? = null
+    var curr: ListNode? = node
+    while (curr != null) {
+        val nextTemp = curr.next
+        curr.next = prev
+        prev = curr
+        curr = nextTemp
+    }
 
+    return prev
+}
 
+/*Linked List cycle
+Given head, the head of a linked list, determine if the linked list has a cycle in it.
+
+There is a cycle in a linked list if there is some node in the list that can be reached again by continuously following the next pointer. Internally, pos is used to denote the index of the node that tail's next pointer is connected to. Note that pos is not passed as a parameter.
+
+Return true if there is a cycle in the linked list. Otherwise, return false.
+https://leetcode.com/problems/linked-list-cycle/description/
+*/
+fun hasCycle(head: ListNode?): Boolean {
+    var slow = head
+    var fast = head
+    while (fast?.next != null) {
+        slow = slow?.next
+        fast = fast.next?.next
+        if (slow == fast) {
+            return true
+        }
+    }
+    return false
+}
 
 
 
