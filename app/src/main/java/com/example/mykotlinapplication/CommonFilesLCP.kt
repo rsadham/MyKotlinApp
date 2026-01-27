@@ -240,24 +240,23 @@ fun search(nums: IntArray, t: Int): Int {
     var l = 0
     var r = nums.size - 1
 
-    while(l<=r){
-        val mid = (l+r) / 2
+    while (l <= r) {
+        val mid = (l + r) / 2
 
-        if(t == nums[mid])
-        {
+        if (t == nums[mid]) {
             return mid
         }
 
-        if(nums[l]<=nums[mid]){
-            if(t>nums[mid] || t<nums[l]){
+        if (nums[l] <= nums[mid]) {
+            if (t > nums[mid] || t < nums[l]) {
                 l = mid + 1
-            }else{
+            } else {
                 r = mid - 1
             }
-        }else{
-            if(t<nums[mid] || t>nums[r]){
+        } else {
+            if (t < nums[mid] || t > nums[r]) {
                 r = mid - 1
-            }else{
+            } else {
                 l = mid + 1
             }
         }
@@ -597,16 +596,16 @@ fun rob(nums: IntArray): Int {
 
 fun robAlternative(nums: IntArray): Int {
 
-    if(nums.isEmpty()) return 0
+    if (nums.isEmpty()) return 0
 
     val n = nums.size
 
-    val dp = IntArray(n+1)
+    val dp = IntArray(n + 1)
     dp[0] = 0
     dp[1] = nums[0]
 
-    for(i in 2..n){
-        dp[i] = maxOf(dp[i-1],dp[i-2]+nums[i-1])
+    for (i in 2..n) {
+        dp[i] = maxOf(dp[i - 1], dp[i - 2] + nums[i - 1])
     }
 
     return dp[n]
@@ -789,10 +788,10 @@ Given an array of integers nums which is sorted in ascending order, and an integ
 You must write an algorithm with O(log n) runtime complexity.
 https://leetcode.com/problems/binary-search/description/
 */
-fun binarySearch(nums: IntArray,target:Int):Int{
+fun binarySearch(nums: IntArray, target: Int): Int {
     var left = 0
     var right = nums.size - 1
-    while(left<=right){
+    while (left <= right) {
         val mid = left + (right - left) / 2
 
         when {
@@ -813,19 +812,20 @@ Suppose you have n versions [1, 2, ..., n] and you want to find out the first ba
 You are given an API bool isBadVersion(version) which returns whether version is bad. Implement a function to find the first bad version. You should minimize the number of calls to the API.
 https://leetcode.com/problems/first-bad-version/description/
 */
-fun isBadVersion(n: Int): Boolean{
+fun isBadVersion(n: Int): Boolean {
     return true
 }
-fun firstBadVersion(n:Int): Int {
+
+fun firstBadVersion(n: Int): Int {
     var left = 1
     var right = n
 
-    while (left < right){
+    while (left < right) {
         val mid = left + (right - left) / 2
 
-        if(isBadVersion(mid)){
+        if (isBadVersion(mid)) {
             right = mid
-        }else {
+        } else {
             left = mid + 1
         }
     }
@@ -869,6 +869,63 @@ fun hasCycle(head: ListNode?): Boolean {
     }
     return false
 }
+
+/* Minimum size subarray sum
+Given an array of positive integers nums and a positive integer target, return the minimal length of a subarray whose
+sum is greater than or equal to target. If there is no such subarray, return 0 instead.
+https://leetcode.com/problems/minimum-size-subarray-sum/
+*/
+fun minSizeSubarraySum(nums: IntArray, target: Int): Int {
+    var left = 0
+    var sum = 0
+    var min = Int.MAX_VALUE
+
+    for (i in nums.indices) {
+        sum += nums[i]
+
+        while (sum >= target) {
+            min = minOf(min, i - left + 1)
+            sum -= nums[left]
+            left++
+        }
+
+    }
+    return if (min == Int.MAX_VALUE) 0 else min
+
+}
+
+/* Fruits into baskets
+You are visiting a farm that has a single row of fruit trees arranged from left to right. The trees are represented by an integer array fruits where fruits[i] is the type of fruit the ith tree produces.
+
+You want to collect as much fruit as possible. However, the owner has some strict rules that you must follow:
+
+You only have two baskets, and each basket can only hold a single type of fruit. There is no limit on the amount of fruit each basket can hold.
+Starting from any tree of your choice, you must pick exactly one fruit from every tree (including the start tree) while moving to the right. The picked fruits must fit in one of your baskets.
+Once you reach a tree with fruit that cannot fit in your baskets, you must stop.
+Given the integer array fruits, return the maximum number of fruits you can pick.
+https://leetcode.com/problems/fruit-into-baskets/description/
+ */
+fun maxFruits(fruits: IntArray): Int {
+    val map = mutableMapOf<Int, Int>()
+    var left = 0
+    var max = 0
+
+    for (i in fruits.indices) {
+        map[fruits[i]] = map.getOrDefault(fruits[i], 0) + 1
+
+        while (map.size > 2) {
+            map[fruits[left]] = map[fruits[left]]!! - 1
+            if (map[fruits[left]] == 0) {
+                map.remove(fruits[left])
+            }
+            left++
+        }
+        max = maxOf(max, i - left + 1)
+    }
+    return max
+}
+
+
 
 
 
