@@ -925,6 +925,30 @@ fun maxFruits(fruits: IntArray): Int {
     return max
 }
 
+/*
+Subarray Sum Equals K
+Given an array of integers nums and an integer k, return the total number of subarrays whose sum equals to k.
+A subarray is a contiguous non-empty sequence of elements within an array.
+https://leetcode.com/problems/subarray-sum-equals-k/description/
+*/
+fun subarraySum(nums: IntArray, k: Int): Int {
+
+    val map = mutableMapOf<Int, Int>()
+    map[0] = 1
+    var pSum = 0
+    var count = 0
+
+    for (i in nums) {
+        pSum += i
+        count += map.getOrDefault(pSum - k, 0)
+        map[pSum] = map.getOrDefault(pSum, 0) + 1
+
+    }
+
+    return count
+
+}
+
 
 
 
