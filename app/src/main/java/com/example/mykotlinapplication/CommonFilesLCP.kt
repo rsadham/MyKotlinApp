@@ -932,21 +932,80 @@ A subarray is a contiguous non-empty sequence of elements within an array.
 https://leetcode.com/problems/subarray-sum-equals-k/description/
 */
 fun subarraySum(nums: IntArray, k: Int): Int {
-
     val map = mutableMapOf<Int, Int>()
     map[0] = 1
     var pSum = 0
     var count = 0
-
     for (i in nums) {
         pSum += i
         count += map.getOrDefault(pSum - k, 0)
         map[pSum] = map.getOrDefault(pSum, 0) + 1
-
     }
-
     return count
+}
 
+/*
+Continuous Subarray Sum (Multiple of K)
+Given an integer array nums and an integer k, return true if nums has a good subarray or false otherwise.
+
+A good subarray is a subarray where:
+
+its length is at least two, and
+the sum of the elements of the subarray is a multiple of k.
+Note that:
+
+A subarray is a contiguous part of the array.
+An integer x is a multiple of k if there exists an integer n such that x = n * k. 0 is always a multiple of k.
+https://leetcode.com/problems/continuous-subarray-sum/description/
+ */
+fun checkSubarraySum(nums: IntArray, k: Int): Boolean {
+    // remainder -> first index
+    val map = mutableMapOf<Int, Int>()
+    map[0] = -1   // Important base case
+
+    var sum = 0
+
+    for (i in nums.indices) {
+        sum += nums[i]
+
+        val rem = if (k != 0) sum % k else sum
+
+        if (map.containsKey(rem)) {
+            val prevIndex = map[rem]!!
+            if (i - prevIndex >= 2) {
+                return true
+            }
+        } else {
+            // store only first occurrence
+            map[rem] = i
+        }
+    }
+    return false
+}
+
+/*
+Diameter of Binary Tree
+Given the root of a binary tree, return the length of the diameter of the tree.
+
+The diameter of a binary tree is the length of the longest path between any two nodes in a tree. This path may or may not pass through the root.
+
+The length of a path between two nodes is represented by the number of edges between them.
+https://leetcode.com/problems/diameter-of-binary-tree/description/
+ */
+fun diameterOfBinaryTree(root: TreeNode?): Int {
+    var diameter = 0
+    fun maxDepth(root:TreeNode?): Int{
+        if(root == null) return 0
+
+        val left = maxDepth(root.left)
+        val right = maxDepth(root.right)
+
+        diameter = maxOf(diameter,right+left)
+
+        return 1+maxOf(left,right)
+    }
+    maxDepth(root)
+    return diameter
 }
 
 
