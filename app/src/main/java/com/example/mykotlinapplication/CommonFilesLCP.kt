@@ -1008,6 +1008,49 @@ fun diameterOfBinaryTree(root: TreeNode?): Int {
     return diameter
 }
 
+/*
+Lowest Common Ancestor of a Binary Tree
+Given a binary tree, find the lowest common ancestor (LCA) of two given nodes in the tree.
+
+According to the definition of LCA on Wikipedia: “The lowest common ancestor is defined between two nodes p and q as the
+lowest node in T that has both p and q as descendants (where we allow a node to be a descendant of itself).”
+https://leetcode.com/problems/lowest-common-ancestor-of-a-binary-tree/description/
+*/
+fun lowestCommonAncestor(
+    root: TreeNode?,
+    p: TreeNode,
+    q: TreeNode
+): TreeNode? {
+    if (root == null) return null
+    if (root == p || root == q) return root
+
+    val left = lowestCommonAncestor(root.left, p, q)
+    val right = lowestCommonAncestor(root.right, p, q)
+
+    if (left != null && right != null) return root
+
+    return left ?: right
+}
+
+/*
+Validate Binary Search Tree leetcode
+Given the root of a binary tree, determine if it is a valid binary search tree (BST).
+
+A valid BST is defined as follows:
+
+The left subtree of a node contains only nodes with keys strictly less than the node's key.
+The right subtree of a node contains only nodes with keys strictly greater than the node's key.
+Both the left and right subtrees must also be binary search trees.
+https://leetcode.com/problems/validate-binary-search-tree/description/
+*/
+fun isValidBST(root: TreeNode?): Boolean {
+    return isValid(root,Long.MIN_VALUE,Long.MAX_VALUE)
+}
+fun isValid(root: TreeNode?,min: Long,max:Long): Boolean{
+    if(root == null) return true
+    if(root.value <=min || root.value >= max) return false
+    return isValid(root.left,min,root.value.toLong()) && isValid(root.right,root.value.toLong(),max)
+}
 
 
 
